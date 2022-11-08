@@ -1,0 +1,13 @@
+widows professional instalar o download docker community edition for windows
+https://docker-docs.netlify.app/docker-for-windows/install/
+
+(Verificar se esta funcionando)
+Instalando a primeira imagem do docker via container
+docker container run hello-world
+
+
+listando as imagens do docker
+docker images
+
+listando container
+docker container ls -a

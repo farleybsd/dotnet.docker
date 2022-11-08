@@ -1,0 +1,42 @@
+ Criando Container a partir de uma imagem Pronta:
+ docker container run <imagem>
+ docker container run hello-world
+
+ visualizar os container Ativos
+ docker container ps
+
+  visualizar os container Ativos/Inativos
+ docker container ps -a
+
+ visualizar imagem
+ docker images
+
+ Baixando uma imagem
+ docker image pull alpine:3.7
+
+ execultando commando dentro do container com o linux
+ docker container run alpine ls -l
+
+
+Criando Container e acesso o mesmo (alpine) imagem docker 
+docker container run -it alpine /bin/sh
+
+ultilizar um container ja criado docker container start + id 
+docker container start b90fab9d733f
+
+ultilizar um container ja criado execultar commando
+docker container exec b90fab9d733f ls -l
+
+parando container  elastic_stonebraker(nome do container)
+docker container stop elastic_stonebraker 
+
+Criando Container com nome personalizado
+docker container run --name Farley alpine
+
+Removendo um cotainer
+docker container rm Farley
+
+
+-- Cli Versionamento
+docker help 
+docker container run --help
