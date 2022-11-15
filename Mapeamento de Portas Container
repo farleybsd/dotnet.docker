@@ -1,0 +1,14 @@
+
+Mapemanto de porta de um Container para mundo Externo Porta Plubica(-p 8080) (:80 porta interna nginx)
+Nginx
+docker container run --name ws1 -p 8080:80 nginx
+Acessar: http://localhost:8080/
+
+Porta Plubica(-p 8080)
+(:80 porta interna nginx)
+--name ws1 Nome Container
+nginx imagem do repositorio
+
+
+-- Execultar Container Segundo Plano
+docker container run --name ws2 -p 8080:80 -d nginx

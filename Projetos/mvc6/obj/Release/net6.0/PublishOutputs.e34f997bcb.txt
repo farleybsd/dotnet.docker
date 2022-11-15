@@ -1,0 +1,12 @@
+C:\MyGit\dotnet.docker\Projetos\mvc6\dist\mvc1.exe
+C:\MyGit\dotnet.docker\Projetos\mvc6\dist\dist\web.config
+C:\MyGit\dotnet.docker\Projetos\mvc6\dist\appsettings.Development.json
+C:\MyGit\dotnet.docker\Projetos\mvc6\dist\appsettings.json
+C:\MyGit\dotnet.docker\Projetos\mvc6\dist\dist\appsettings.Development.json
+C:\MyGit\dotnet.docker\Projetos\mvc6\dist\dist\appsettings.json
+C:\MyGit\dotnet.docker\Projetos\mvc6\dist\dist\mvc1.deps.json
+C:\MyGit\dotnet.docker\Projetos\mvc6\dist\dist\mvc1.runtimeconfig.json
+C:\MyGit\dotnet.docker\Projetos\mvc6\dist\mvc1.dll
+C:\MyGit\dotnet.docker\Projetos\mvc6\dist\mvc1.deps.json
+C:\MyGit\dotnet.docker\Projetos\mvc6\dist\mvc1.runtimeconfig.json
+C:\MyGit\dotnet.docker\Projetos\mvc6\dist\mvc1.pdb

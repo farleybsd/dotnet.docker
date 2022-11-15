@@ -1,0 +1,53 @@
+Removendo a imagem
+Listando as imagens
+docker images
+
+Removendo uma imagem
+docker image rm + id 
+
+# Definindo as etapas que iremos usar para criar uma imagem
+1 - Definir uma imagem base
+2 - Definir informacoes para a imagem 
+3 - Execultar comandos para instalar e inicar o Nginx
+4 - Expor qual a porta que o servidor vai atender no container
+5 - Definir ponto de entrada a aplicacao
+6 - Definir a execulcao de um comando para inicar o servidor Nginx
+
+obs: lembrar de estar no contexto da aplicacao  para gerar o BUILD (Nivel Diretorio)
+
+#Imagem Base
+FROM debian:8 
+#Descricao
+LABEL version="1.0" description="Debian/Nginx"
+#Comandos que vai instalar o Nginx
+RUN apt-get update  && apt-get install -y nginx && apt-get clean
+#Porta que esta sendo exposta
+EXPOSE 80
+#Pasta de entrada
+ENTRYPOINT [ "/usr/sbin/nginx" ]
+# Comandos que sera execultado
+CMD [ "-g","daemon off;" ] 
+
+#Rodar o docfile no diretorio
+# docker build -t macoratti/nginx:1.0 . (NAO ESQUECER DO PONTO INDICA O DIRETORIO ATUAL)
+docker build -t macoratti/nginx:1.0 .
+
+# Criando Container com a imagem Criada
+docker container run -d -p 8080:80 --name=srvfarley macoratti/nginx:1.0
+
+
+# Pulicando Imagem
+docker login
+docker push nome da imagem
+
+#Help
+docker image --help
+
+#baixando uma imagem
+docker image pull redis
+
+# Inspesionando uma imagem
+docker image inspect macoratti/nginx:1.0 
+
+#Historico de uma iamgem 
+docker image history macoratti/nginx:1.0 

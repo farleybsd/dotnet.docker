@@ -1,0 +1,51 @@
+Passos: Atencao entrar na pasta do projeto nesse caso MVC6
+
+1. Pulicando Aplicacao
+dotnet publish --configuration Release --output dist
+
+1.1 --configuration Release => indica que estamos usando o modo release que e usado e producao
+1.2 --output dist => especifica que o projeto compilado sera copiado para uma pasta dist.
+
+2. Criar o arquivo DockerFile
+definir as instrucoes para Criar a imagem
+2.1 definir uma imagem Base
+2.2 definir informacoes para a imagem
+2.3 definir pasta de trabalho(/app)
+2.4 copiar arquivos da pasta (dist) para um container(/app)
+2.5 Expor a porta do container e definir em qual porta o servidor vai atender
+2.6 definir o ponto de entrada na aplicacao(mvc1.dll)
+2.7 Docfile 
+
+FROM mcr.microsoft.com/dotnet/aspnet:6.0
+LABEL version="1.0.2" description="Aplicacao ASP .NET Core MVC"
+COPY dist /app pasta de trabalho no container
+WORKDIR /app 
+EXPOSE 80/tcp
+ENTRYPOINT ["dotnet","mvc1.dll"]
+
+3. Criar a imagem
+docker build -t imagem:tag .
+3.1 criando o arquivo de imagem
+docker build -t aspnetcoremvc/app1:1.0 . 
+docker build=> Comando
+-t => Parametro usado para informar que a imagem pertence ao usuario
+aspnetcoremvc/app1:1.0 => O nome da imagem e a tag atribuida a imagem 
+. => o diretorio atual (onde esta o diretorio com arquivo Docfile)
+
+4. criando container
+docker container create -p 3000:80 --name mvcprodutos  aspnetcoremvc/app1:1.0
+
+docker container create=> Comando para criar o container
+-p 3000:80 => mapeia a porta 3000 do host(fora do container) para porta 80 do container
+--name mvcprodutos => nome do container
+aspnetcoremvc/app1:1.0 =>  nome da imagem usada
+
+4.1 mostrando o container criado
+docker container ps -a 
+4.2 subindo o container
+docker container start  mvcprodutos
+4.3 Acessar a aplicao no docker
+http://localhost:3000
+
+5. Docker Hub Microsoft
+https://hub.docker.com/_/microsoft-dotnet-aspnet/

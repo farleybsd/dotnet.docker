@@ -1,0 +1,14 @@
+Pulicando App Console net core no Docker
+
+docker container run --name demonet -it  mcr.microsoft.com/dotnet/sdk:6.0
+
+comando dotnet CLI
+
+dotnet new console
+dotnet build 
+dotnet run
+dotnet restore
+dotnet add package <nome>
+
+Voltando Acessar o container
+docker container start -ia demonet

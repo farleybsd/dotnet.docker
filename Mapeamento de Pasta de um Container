@@ -1,0 +1,8 @@
+Mapeando um pasta para o servidor carregar o html
+docker container run --name ws3 -p 8080:80 -v html:/usr/share/nginx/html -d nginx
+
+$(pwd)/html - Pasta Local 
+:/usr/share/nginx/html - Pasta Servidor
+
+Verificando as configuracoes
+docker container inspect ws3

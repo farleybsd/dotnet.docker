@@ -37,6 +37,9 @@ Removendo um cotainer
 docker container rm Farley
 
 
+Limpando todos os container
+docker container prune
+
 -- Cli Versionamento
 docker help 
 docker container run --help
