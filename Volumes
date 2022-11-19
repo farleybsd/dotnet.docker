@@ -1,0 +1,158 @@
+Os Volumes separam os arquivos de dados que sao gerado por um aplicativo ou banco de dados
+do restante do armazanamento do container.
+
+Eles permitem que dos dados importantes existam fora do container,o que significa que voce 
+pode substituir um container sem perder os dados que ele criou.
+
+Principais Usos
+
+1. Para manter os dados quando um container for removido
+2. Para compartilhar dados entre os sistema de arquivos do host eo container docker
+3. Para compartilhar dados com  outros container docker
+
+1.0 Criando um Volume
+docker container run -v <pasta_host>:<pasta_container> imagem 
+docker container run -it --name alp1 -v "C:\Users\farley.rufino\teste:/usr/share" alpine
+
+1.1 Verificando Mapeamento
+docker container inspect alp1
+
+
+####### Segunda Forma de Criar Container ########
+
+1. Este comando cria um novo volume que os container podem consumir e aonde podem separ
+armazenado os dados. Se um nome nao for especificado, o docker vai gerar um nome aletorio
+
+docker volume create <nome>
+docker volume create dadosdb
+
+1.1 Neste comando o docker mostra qual nome o volume e o seu driver. Geralmente
+e usado o driver local que e o driver padrao do docker
+
+docker volume ls
+
+2. Referenciar um volume existente a um container criado a partir do Mysql
+
+docker image pull mysql:5.7
+
+criar a senha do mysql MYSQL_ROOT_PASSWORD
+
+2.1 Na saida deste comando vemos a secao dos Volumes que indica que esta imagem
+usa o volume para o diretorio /var/lib/mysql que o local onde o Mysql armazena os seus
+arquivos e dados.
+
+docker image inspect mysql:5.7
+
+"Volumes": {
+                "/var/lib/mysql": {}
+},
+
+2.2 listando as image
+docker image ls
+
+2.3 Criando um container
+
+docker container run -d --name mysql -v dadosdb:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=numsey  mysql:5.7
+
+2.4 listando o container criado
+docker container ls
+
+2.5 Acessando o container -it mysql e nome do container
+docker container exec -it mysql /bin/bash
+
+2.6 Acesso o Mysql
+mysql -u root -p 
+
+2.6.1 visualizando data bases
+show databases;
+2.6.2 criando uma base
+create database testedb;
+
+
+2.7 parando um container 
+docker container stop mysql
+2.8 removendo um conatiner porenm os dados estarao no volume 
+docker container rm mysql
+
+3.0 criando um novo container com os dados 
+docker container run -d --name macmysql -v dadosdb:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=numsey  mysql:5.7
+3.1 acessando o container
+docker container exec -it macmysql /bin/bash
+3.2 Acesso o Mysql
+mysql -u root -p 
+3.3 visualizando data bases que estava criada antes
+show databases;
+
+4.0 Verificando Imagens
+docker images
+
+## Volume para Mysql  com App Dotnet 6 ##
+
+1. Criando Volume (Repositorio de Dados)
+docker volume create --name produtosdata
+
+Estamos criando um volume chamado produtosdata que sera usado para amarmazenar os 
+arquivos de dados no banco de dados
+
+1.2 Listando o volume
+docker volume ls 
+
+2. Criando o Container 
+docker container run -d --name mysql -v produtosdata:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=Hw8vup5e -e bind-address=0.0.0.0 mysql:5.7
+
+-d ->  execultar docker em segundo plano
+-name mysql -> Nome do Container
+-e MYSQL_ROOT_PASSWORD=Hw8vup5e -> senha do mysql
+-e bind-address=0.0.0.0-> aceitar qualquer requisicao 
+-v produtosdata:/var/lib/mysql -> Usa um volume chamado produtosdata para fornecer o
+conteudo do diretorio /var/lib/mysql do container 
+mysql:5.7 -> Imagem usada
+
+3. Verificando Logs container
+docker container logs mysql
+
+4. Criando publicacao/Imagem da aplicacao Produtos Mvc
+
+4.1 Publicando a Applicacao (Diretorio da aplicacao)
+dotnet publish --configuration Release --output dist
+
+4.2 Recriar a  imagem do docker(Diretorio da aplicacao)
+docker build -t produtosmvc/app:2.0 .
+
+5. Container da aplicacao Produtos Mvc
+
+Rede Virtuais 
+Quando vc inicia um container, o docker conecta-o a uma rede <rede virtual interna>
+e atribui a ele um <endereco IP> para que ele possa se comunicar com o servidor de host
+e com outros container da mesma rede.
+Para que o container <MVC> conversar com o container de banco de dados <Mysql> precisamos
+saber o endereco Ip que o docker atribuiu ao container  do <Mysql>
+
+Comando: 
+docker network inspect bridge 
+A resposta desse comando mostrara como o docker configurou a rede virtual e incluira 
+uma secao container  que mostra os containers conectados a rede e os enderecos ips
+que sao atribuidos a eles (IPV4ADDRESS)
+
+"Containers": {
+            "5753d1255bb78008529ce3177d6f6d0667dbda5b29506e19e25b5238bad0dcda": {
+                "Name": "mysql",
+                "EndpointID": "2b86a16210789c069ffcd55b3378b58253c36fcfb45916fee0c334d733be0ea4",
+                "MacAddress": "02:42:ac:11:00:02",
+                "IPv4Address": "172.17.0.2/16",
+                "IPv6Address": ""
+            }
+        },
+
+6. Criando o container MVC  passando as informacao do  ip do Mysql
+docker container run -d --name appmvc -p 3000:80 -e DBHOST=172.17.0.2 produtosmvc/app:2.0
+
+6.1 Quando a App Mvc for  iniciada veremos a mensagem  que mostrar que o EF core aplicou as
+migracoes do banco de dados
+
+Acessar: http://localhost:3000
+
+docker container logs appmvc
+
+6.2 Acessando o Mysql
+docker container exec -it mysql bash
