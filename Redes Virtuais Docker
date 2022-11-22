@@ -1,0 +1,167 @@
+
+Redes Definidas por Software (SDN) ou redes virtuais
+# Por padrao o docker e disponibilizado com 3 redes que oferecem configuracoes especificas
+# para gerenciar o trafego de dados. 
+
+1. Visualizar as informacoes da rede
+docker network ls 
+
+1.1 A rede <host> e a rede do servidor host
+
+1.2 a rede <none> e uma rede que nao possui conectividade e que pode ser usada para isolar
+complementos do containers
+
+1.3 A rede <bridge> e que mais nos interessa,pois o docker adicionar todos os containers a essa rede quando os cria.(Essa e a rede padrao para qualquer container,a menos que associenos,explicitamente,outra rede a ele.) 
+
+1.4 
+# docker network ls
+NETWORK ID     NAME      DRIVER    SCOPE
+6cd3df57bfac   bridge    bridge    local
+1c2136742fbb   host      host      local
+3e8e4bf82215   none      null      local
+
+
+2. Inspesionando a rede Atual(bridge)
+# docker network inspect bridge
+
+{
+        "Name": "bridge",
+        "Id": "6cd3df57bfac606d5228472ef1a24e8e3d78a87134132ac326e1e65d48763978",
+        "Created": "2022-11-22T02:30:36.2174653Z",
+        "Scope": "local",
+        "Driver": "bridge",
+        "EnableIPv6": false,
+        "IPAM": {
+            "Driver": "default",
+            "Options": null,
+            "Config": [
+                {
+                    "Subnet": "172.17.0.0/16",
+                    "Gateway": "172.17.0.1"
+                }
+            ]
+        },
+        "Internal": false,
+        "Attachable": false,
+        "Ingress": false,
+        "ConfigFrom": {
+            "Network": ""
+        },
+        "ConfigOnly": false,
+        "Containers": {
+            "5753d1255bb78008529ce3177d6f6d0667dbda5b29506e19e25b5238bad0dcda": {
+                "Name": "<mysql>",
+                "EndpointID": "588d231be40ccc9ebfae7b08d028a325007a5782beee407522dbb3c3a38b09b9",
+                "MacAddress": "02:42:ac:11:00:02",
+                "IPv4Address": "172.17.0.2/16",
+                "IPv6Address": ""
+            },
+            "de42372a95bba0881c3a5875939da301a31e3df4547c4e392feba59a95dde221": {
+                "Name": "<appmvc>",
+                "EndpointID": "aa1dbca2a734cadda416d3a9f95d4ec4734b8d404d9750e54c535fe76b66d951",
+                "MacAddress": "02:42:ac:11:00:03",
+                "IPv4Address": "172.17.0.3/16",
+                "IPv6Address": ""
+            }
+        },
+        "Options": {
+            "com.docker.network.bridge.default_bridge": "true",
+            "com.docker.network.bridge.enable_icc": "true",
+            "com.docker.network.bridge.enable_ip_masquerade": "true",
+            "com.docker.network.bridge.host_binding_ipv4": "0.0.0.0",
+            "com.docker.network.bridge.name": "docker0",
+            "com.docker.network.driver.mtu": "1500"
+        },
+        "Labels": {}
+    }
+]
+
+
+3. Criando um container com as Vnet
+# docker container run -it --name alp1 alpine
+
+3.1 Verificando o ip do docker 
+# hostname -i
+172.17.0.2
+
+3.2 Inspesionando o ip de um container
+# docker container inspect alp1
+ "Networks": {
+                "bridge": {
+                    "IPAMConfig": null,
+                    "Links": null,
+                    "Aliases": null,
+                    "NetworkID": "6cd3df57bfac606d5228472ef1a24e8e3d78a87134132ac326e1e65d48763978",
+                    "EndpointID": "a248ad65c1ed402d4374cf7bd051ba8caa9ec6c167f0cb66349eb90d2611f4e8",
+                    "Gateway": "172.17.0.1",
+                    "IPAddress": "172.17.0.2",
+                    "IPPrefixLen": 16,
+                    "IPv6Gateway": "",
+                    "GlobalIPv6Address": "",
+                    "GlobalIPv6PrefixLen": 0,
+                    "MacAddress": "02:42:ac:11:00:02",
+                    "DriverOpts": null
+                }
+            }
+
+
+4. Criando uma rede no docker entre container
+# docker network create --driver <nome> <nome da rede >
+docker network create --driver bridge redealpine
+
+6cd3df57bfac   bridge       bridge    local
+1c2136742fbb   host         host      local
+3e8e4bf82215   none         null      local
+c44aac6ac4c3   redealpine   bridge    local
+
+4.1 Adicionando o container(1) a rede
+docker container run -it --name alp1 --network redealpine alpine
+
+4.1 Adicionando o container(2) a rede
+docker container run -it --name alp2 --network redealpine alpine
+
+5. Adicionando um container a rede
+# docker network connect redealpine alp3
+
+6. Escalando App nas redes docker
+
+6.1 criando outro container para aplicacao MVC:
+ #
+ docker container run -d --name appvc2 -p 3500:80 -e DBHOST=172.17.0.2 produtosmvc/app:2.0 
+
+7. Redes customizadas 
+# docker network create <nome_rede>
+7.1 Removendo todos os containers
+# docker container prune
+
+7.2 Criando duas novas rede
+# docker network create frontend
+# docker network create backend
+
+7.3 listandos as redes criadas
+# docker network ls
+
+8. Conectando um container com a rede  customizada
+# 
+docker container run -d --name mysql -v produtosdata:/var/lib/mysql --network=backend -e MYSQL_ROOT_PASSWORD=numsey -e bind-address=0.0.0.0 mysql:5.7
+
+8.1 inspecionando a rede backend
+# docker network inspect backend
+
+9. Criando os containers MVC
+
+# docker create --name mvcapp1 -e DBHOST=mysql --network=backend produtosmvc/app:2.0
+# docker create --name mvcapp2 -e DBHOST=mysql --network=backend produtosmvc/app:2.0
+# docker create --name mvcapp3 -e DBHOST=mysql --network=backend produtosmvc/app:2.0
+
+10. Conectar cada container da aplicacao MVC a rede frontend
+# docker network connect frontend mvcapp1
+# docker network connect frontend mvcapp2
+# docker network connect frontend mvcapp3
+
+11. Inciando os containers
+# docker container start mvcapp1  mvcapp2 mvcapp3
+
+12. Load Balance(HaProxy) para todos os containers
+
+# docker container run -d --name loadbalancer --network=frontend -v "C:\MyGit\dotnet.docker\Projetos\Vnet\haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg" -p 3200:80 haproxy:1.7.0
