@@ -1,0 +1,101 @@
+# Docker Compose
+
+1. Docker Compose que e uma ferramenta usada para descrever aplicacoes complexas 
+e gerenciar os containers,as redes e os volumes que essa aplicacoes exigem para funcionar.
+
+1.1 Ele simplifica o processo de configuracao e execucao de aplicativos para que voce 
+nao precise digitar comandos complexos , o que pode levar a erros de configuracao
+
+1.2 Ele e usado para descrever aplicacoes de forma consistente e previsivel usando
+um arquivo de composicao com a <extensao.yml> que contem detalhes de todos os volumes,redes
+e containers que compoem  um aplicativo e os relacionamentos entre eles.
+
+===== Para processar o arquivo de composicao usar o comando=====
+# docker-compose
+
+# verificar a instalacao docker-compose (Windows NATIVO) Linux instalar
+# docker-compose --version
+Docker Compose version v2.12.1
+
+2. limpado todos os containers
+# docker container prune
+
+3. limpado todos os volunes
+# docker volume prune
+
+4. limpado todas as redes
+# docker network prune
+
+##### Roteirooooo ######
+
+1. Definir o ambiente necessario para sua aplicacao funcionando ultizando um dockerfile
+2. Criar o arquivo de composicao (.yml) definido quais os servico sao essenciais para 
+sua aplicacao e a relacionamento entre eles.
+3. Processar o arquivo de composicao executando o comando docker-compose para que seu
+ambiente seja criado e configurado.
+4. Pode ser criado com a extensao .yml ou yaml
+yaml e um formato usado para criar arquivos de configuracao de facil leitura
+organiza o arquivo em secoes e usa a indetacao com espacos para expressar a estrutura
+do arquivo.
+
+
+5. Docker compose exemplo
+
+version =  especifica a bersao do esquema docker-compose que o arquivo usa Atualmente a
+versao mais atual e a 3.
+
+volumes = E usada para  configurar os volumes que serao usados pelo containers definido
+para compor arquivo. Definimos um volume chamado produtosdados.
+
+networks = E uasda para configurar as redes que serao usadas pelo containers
+definidos no arquivo de composicao. definidos 2 redes chamadas frontend backend
+
+services = Define os containers que serao  ultizado (imagens,contexto,etc)
+
+mysql: indica o inicio da descricao de um servico que vai criar o container chamando mysql
+image: Define a imagem docker que sera usada no container
+volumes: especifica os volumes usados pelos containers e os diretorios envolvidos
+networks: Define as rede com a quais o container vai se conectar
+environment: Define as variaveis de ambiente que serao usadas quando o container for criado
+           
+6. Processando o arquivo docker-compose
+
+# docker-compose -f docker-compose.yml build
+
+docker-compose = comando
+-f especifica o nome do arquivo de composicao
+build informa ao docker para processar o arquivo
+
+7. verificar sintaxe
+# docker-compose  build
+
+8. Processar arquivo de composicao e iniciar a aplicacao
+#  docker-compose up -d
+
+9. desfazendo a operacao
+#  docker-compose down
+docker-compose down --volumes
+
+10. verificar os coantainers
+# docker-compose  build
+# docker container ps -a
+# docker network ls 
+# docker volume ls 
+
+11 .Testando
+#  docker-compose up -d 
+#  docker container ps 
+#  docker-compose logs 
+
+12 verificar Banco'
+
+docker container exec -it <id> bash
+docker container exec -it eba604276d32 bash
+# mysql -u root -p
+# show databases;
+# use produtosdb;
+# show tables;
+# select * from produto;
+
+13. desfazendo  o comando up
+docker-compose down -v

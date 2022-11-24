@@ -1,0 +1,16 @@
+version: "3"
+
+networks:
+       frontend:
+
+services:
+
+      mvc:
+        build:
+          context: .
+          dockerfile: Dockerfile
+        container_name: AppMvc
+        networks:
+          - frontend
+        ports:
+          - 5000:80   
