@@ -1,0 +1,45 @@
+0. Criar o arquivo
+0.1 Dockerfile.dev
+0.2 docker-compose-dev.yml
+
+1. Processando a imagem 
+# docker-compose -f docker-compose-dev.yml -p dev build
+
+2. Verifcando a imagem criada
+# docker images 
+
+PS C:\MyGit\dotnet.docker\Deploy\mvc1> docker images
+REPOSITORY           TAG       IMAGE ID       CREATED         SIZE
+dev-mvc              latest    8e71777eb74f   2 minutes ago   963MB <=====
+produtosmvc/app      2.0       f847762ab35f   5 days ago      221MB
+aspnetcoremvc/app1   1.0       7e9b7b6771f7   9 days ago      216MB
+alpine               latest    bfe296a52501   12 days ago     5.54MB
+macoratti/nginx      1.0       5ef0c383419b   2 weeks ago     215MB
+mysql                5.7       eef0fab001e8   2 weeks ago     495MB
+haproxy              1.7.0     7cc35805808d   5 years ago     138MB
+
+3. Processando o arquivo de composicao
+# docker-compose -f docker-compose-dev.yml -p dev up mvc
+
+-- Multi stage build(Permite quantos comandos from precisarmos)
+- Cada comando <FROM> e um novo estagio que substituido no anterior / como se fosse
+uma nova imagem indepedente e isolada.
+
+- Assinaturas do comando <from> agora permite nomear os estagios usando as instrucao <AS>
+
+1. Passando informacoes entre diferentes estagios 
+# O comando <COPY> e o argumento --from <nome_do_estagio>
+
+from microsoft/dotnet:2.1-sdk as build
+.......
+from microsoft/dotnet:1.1-runtime as release
+COPY --from = build/app
+
+2. Exemplo
+Criar :
+0.1 Dockerfile.multi
+0.2 docker-compose-dev.yml
+-- Gerando Imagem 
+# docker build -f Dockerfile.multi -t multi_mvc .
+--Subindo o container
+# docker-compose -f  Dockerfile.multi.yml -p multi up mvc
