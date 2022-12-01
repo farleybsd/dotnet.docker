@@ -1,0 +1,15 @@
+0. Vericiando o ambiente
+# docker ps - a (Listando os container)
+# docker images (Listando as imagens)
+
+1. Instalando a imagem do Mongo
+# docker pull mongo
+
+2. Criando um container Mongo
+# docker run -d -p 27017:27017 --name catalog-mongo mongo
+
+3. Acessando o Docker pelo  bash
+# docker exec -it catalog-mongo /bin/bash
+
+4. Acessando o Mongo
+# mongo

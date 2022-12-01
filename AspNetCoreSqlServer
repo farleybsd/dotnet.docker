@@ -1,0 +1,29 @@
+0. Roteiro
+
+    - Criar uma Web Api Asp .Net Core para gerenciar produtos
+    - Realizar o Crub basico usando o Efcore acessando o Sql Server
+    - Criar o dockerfile e a imagem para Web Api
+    - Criar o container para Web Api
+    - Criar container  para  Sql Sever (realizar Operacoes)
+    - Orquestrar os containers usando o docker-compose
+    - Testar o acesso da Api ao SqlServer usando o Postman
+
+1. Recursos
+    - Net Core Sdk 5.0
+    - Visual Stidio Community
+    - Docker Desktop for Windows
+    - Imagem do Sql Server (Dcoker Hub)
+
+
+2. Processo Manual sem docker compose
+
+# docker pull microsoft/mssql-server-linux:2017-latest
+# docker run -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=Numsey#2021' -p 11433:1433 -d microsoft/mssql-server-linux:2017-latest
+
+3. Fazendo com orquestracao
+    - Criar container orchestrator Support Vs2019
+    - Criar o arquivo dockerfile no projeto
+    - Criar o projeto docker-compose (docker-compose.dcproj)
+    - .dockignore
+    - docker-compose.yml
+    - docker-compose.override.yml

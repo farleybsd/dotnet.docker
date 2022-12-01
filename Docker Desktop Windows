@@ -1,0 +1,95 @@
+1.  Docker Desktop for Windows Versao community 
+- O docker desktop <com wsl2> e uma solucao para execultar containers Linux nos sistemas
+windows e macOs.
+- Permite experiencia semelhante a do Linux
+- Temos um desempenho de disco proximo a uma maquina Linux
+- Wsl2 virtualiza o kernel do linux para windows
+
+2. Requisitos 
+- Windows 10 de 64 bits: Pro,Enterprise ou Education(build 17134 ou superior)
+- Os recursos do Hyper-V e Containers Windows deve ser habilitados
+- Requisitos do cliente Hyper-V no Windows 10
+    * Processador de 64 bits(SLAT)
+    * 4gb RAM
+    * Suporte a virtualizacao de hadware no nivel de bios devem ser habiltados nas 
+      configuracoes do BIOS.
+
+
+3. Requisitos wsl2 BackEnd
+- Windows 10 de 64 bits: Home,Pro,Enterprise ou Education(build 1903/18362 ou superior)
+- Ativar o recurso WSL2 no Windows
+- Requisitos do cliente Hyper-V no Windows 10
+    * Processador de 64 bits(SLAT)
+    * 4gb RAM
+    * Suporte a virtualizacao de hadware no nivel de bios devem ser habiltados nas 
+      configuracoes do BIOS.
+    * Baixar instalar o pacote de atualizacao do kernel do Linux
+
+4. Recursos que sao instalados Junto com Windows
+
+    * Docker engine ->  Usado para criar imagens e containers
+    * Docker Cli Client -> Comandos para administracao do docker
+    * Docker Compose -> Usado para definir e execultar aplicatios docker de varios containers
+    * Kubernets - Permite gerenciar aplicatios em containers em varios hosts
+    * Notary - Gerenciar publicar colecoes de conteudo
+    * Credential Helper - Manter as credencias do docker seguras
+ 
+
+ 5. Testando a instalacao 
+    
+    * docker --version 
+    * docker run hello-world
+
+6. Suporte ao docker no visual Studio
+    * Projetos Asp.Net
+    * Projetos Asp .Net Core
+    * Projetos Console .Net Core e .Net Framework
+
+7. Niveis se suporcte ao Docker 
+
+    * Projetos sem orquestracao de containers 
+    * Adicionar suporte ao docker container para um projeto unico
+    * Projetos com suporte a orquestracao de containers 
+    * Adiciona arquivos de suporte apropiados para o orquestrador especifico
+    * Orquestracao usadas:
+            - Docker Compose
+            - Kubernetes
+            - Service Fabric
+
+8. Para novos Projetos  sem orquestracao
+    * Basta Habilitar o docker no visual studio na hora de criar o Projeto
+
+    * Para Pojetos ja existentes 
+        - Solucao -> Projeto -> Botao Direito -> Add -> Container
+
+9. Habilitando o suporte ao docker no Visual Studio
+
+    * Abrir Visual Studio 2019 -> CONTINUAR SEM CODIDO -> Ferramentas -> Opcoes ->
+    Ferramentas de container -> 
+        [General]
+            - Marcar todas para avise-me 
+        [Projeto Unico]
+            - Nao Altera 
+        [Janelas Compose]
+            - Nao Altera 
+         [Docker Compose]
+            - Nao Altera 
+
+10. Criando uma Api com orquestrador usando o Visual Studio
+    * Criar uma blank Solution: Catalog
+        - Incluir um projeto Asp .Net Core Web Api: Product Api
+        - Incluir pacote MongoDb.Driver
+    * Criar as patas Entities
+        - Criar a entidade Product
+    * Criar a pasta Data
+        - Definir a interface do contexto para o MongoDB : IproductContext
+        - Implementar a interface do contexto:productContext
+        - Criar a classe para popular o banco IproductContextSeed
+    * Criar a pasta Repositories
+        - Implementar padrao repositorio
+        - Criar a interface IproductRepository
+        - Criar a classe  ProductRepository
+    * Arquivo Startup 
+        - Registrar o servico ConfigureServices
+    * Na pasta Controller
+        - Criar o controller ProductController
