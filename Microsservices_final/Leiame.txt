@@ -1,0 +1,17 @@
+No projeto Discount.API e Discount.Grpc eu existe uma pasta Extensions
+onde foi criado o arquivo HostExtensions que pode ser usado para migrar
+o banco de dados postgresql e a tabela para o conteiner
+
+Para chamar esta classe use o código abaixo no arquivo Program do respectivo
+projeto
+
+ public static void Main(string[] args)
+        {
+           var host = CreateHostBuilder(args).Build();
+           host.MigrateDatabase<Program>();
+           host.Run();
+        }
+
+
+Eu não mostrei essa implementação nas aulas mas ela esta pronto e você pode usar
+se quiser
