@@ -1,0 +1,30 @@
+services:
+  backend:
+    build:
+      context: D:\_vda_qua\kubernetes_deploy2\backend
+      dockerfile: Dockerfile
+    image: pizzabackend
+    ports:
+    - published: 5900
+      target: 80
+  frontend:
+    build:
+      context: D:\_vda_qua\kubernetes_deploy2\frontend
+      dockerfile: Dockerfile
+    depends_on:
+      backend:
+        condition: service_started
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: https://+:443;http://+:80
+      backendUrl: http://backend
+    image: pizzafrontend
+    ports:
+    - published: 5902
+      target: 80
+    - target: 80
+    - target: 443
+    volumes:
+    - C:\Users\Macoratti\AppData\Roaming\ASP.NET\Https:/root/.aspnet/https:ro
+    - C:\Users\Macoratti\AppData\Roaming\Microsoft\UserSecrets:/root/.microsoft/usersecrets:ro
+version: '3.4'

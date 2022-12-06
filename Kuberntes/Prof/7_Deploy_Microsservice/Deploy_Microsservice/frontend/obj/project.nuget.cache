@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "1ZiaT9K3BUIwdPqTxdr6t/JUuxPXzR3jrqYzxYheHs8rLZmIDG9cv8GO30gVUp8Sjoi4XYF0OcYgUiCJSS+Dfw==",
+  "success": true,
+  "projectFilePath": "C:\\_Cursos_Macoratti\\Curso_Docker_Essencial_NET\\Módulo12_Bônus_Kubernetes\\kubernetes_deploy2\\Deploy_Microsservice\\frontend\\frontend.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Macoratti\\.nuget\\packages\\microsoft.visualstudio.azure.containers.tools.targets\\1.15.1\\microsoft.visualstudio.azure.containers.tools.targets.1.15.1.nupkg.sha512"
+  ],
+  "logs": []
+}
