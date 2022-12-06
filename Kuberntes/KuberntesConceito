@@ -1,0 +1,63 @@
+Kubernetes ou K8s Timoneiro
+
+# Kubernetes => Realiza a implantacao escalonamento,gerenciamento e orquestracao de
+containers.
+
+# Dcoker => Cria,Executa,distribui e compartilha containers
+
+
+1. Kubernetes.Pod
+    - O pod e a menor e mais basica estrutura do Kubernetes
+    - O pod consiste de um ou mais containers, recursos de armazenamento em um unico endereco IP
+    - Um pod representa uma unica instacia de um processo em execucao no seu cluster
+    - Os pods sao efemeros. Eles nao sao projetados para permanecer em execucao para sempre
+    e depois de encerrados,nao pode ser recuperados.
+
+2. Kubernetes.Pod.Ciclo de vida   
+    - Pending: Foi criado e aceito pelo cluster,mas um ou mais containers ainda nao esta em execucao. Essa fase inclui o tempo de escalonamento e o tempo de dowload da imagem
+    
+    - Running: Foi criado alocado a um no, e todos os containers foram criados. pelo menos um container esta em execucao no processo de iniciar ou esta reiniciando.
+
+    - Succeeded: Todos os containers no pod foram encerrados com sucesso, Os pods encerrados nao sao reiniciados
+
+    - Failed: Todos containers no pod foram encerrados e pelo menos um foi encerrado com
+    falha. Um container "Falha" se ele e encerrado com um staus diferente de zero.
+
+    - Unknow: <Desconhecido> O estado do Pod nao pode ser determinado. As causas podem ser um erro de comunicacao entre o node e o Pod.s
+Ex:
+
+Maq. Virtual => Seria a virtualizacao
+Docker => Seria o Container
+Kubernetes => Seria o Pod
+
+3. Kubernetes.Node (Nòs)
+# Por padrao, os pods sao execultados nos nodes ou nos seja no pool de nos padrao do clutes. (contem os podes do kubernetes que contem os container do docker)
+
+4. Kubernetes.SingleNode / Kubernetes.Cluster
+# Modo de instacao padrao e cluster
+
+- Kubernetes.SingleNode : Um unico <nò> para todos os conrainer  
+- Kubernetes.cluster : Varios  <nòs> contendo um ou varios container 
+                # Kubernetes.cluster Tipo de <NÒ>
+                    - Worker : Quem executa os containers nos Pods
+                    - Master: Execulta os componentes do plano de controle (Faz clutes funcionar)
+
+5. Kubernetes.Arquitetura (K8s)
+
+- <Kubeadm>: E a ferramenta que automatiza grande parte do processo de criacao do cluster.(Facilita a instalacao)
+
+- <Kubelet>: Componente essencial do kubernetes que lida com a execucao de pods, Atua como um agente  em cada node, intermediando as trocas de mensagem entre Apis Server e o docker runtime
+
+- <Kubectl> : e Ferramente cli de interacao com o clutser permite que executar comandos em cluster do kubernetes, implantar aplicativos,inspessionar e gerenciar recursos do cluster
+e visualizar logs.
+
+
+6. Kubernetes.Control Plane (Master)
+
+- <etcd> : Prove um sistema distribuido e compartilhado para armazenar informacoes do estado do cluster. Armazena as informacoes no formato chave e valor
+
+- <ApiSever> : Prove rodos os recursos do kubernetes. E um servico rest valida e configura dados para o objeto da API que inluem <PODS> <servicos> <controaladores> etc ...
+
+- <ControllManager> : Ececulta funcoes em nivel de cluster, como replicar componentes, acompanhar nos de trabalho lidar com falhas de nos e assim por diante
+
+- <Scheduler> :  Escalona os pods para serem executados no <Nos>

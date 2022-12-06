@@ -1,0 +1,81 @@
+1. <Docker>
+# Instalacao do docker Desktop
+https://www.docker.com/products/docker-desktop/
+
+2. <MiniKube> Implementacao mais leve do kubernetes
+# Instalacao do ninikube
+https://minikube.sigs.k8s.io/docs/start/
+
+- variavel ambietente
+$oldPath = [Environment]::GetEnvironmentVariable('Path', [EnvironmentVariableTarget]::Machine)
+if ($oldPath.Split(';') -inotcontains 'C:\minikube'){ `
+  [Environment]::SetEnvironmentVariable('Path', $('{0};C:\minikube' -f $oldPath), [EnvironmentVariableTarget]::Machine) `
+}
+- Tem que estar com o docker rodando
+- minikube start
+- minikube status
+3. <Kubectl> CLI para administracao do clutes
+# Instalacao do Kubectl
+https://kubernetes.io/docs/tasks/tools/install-kubectl-windows/
+- kubectl cluster-info 
+# informacoes do cluster
+- kubectl get all 
+# informacoes do Clusters
+
+4. Kubernetes.ModoInteracao
+- <Imperativa> Usando o kubectl e os seus diversos parametros:
+    - Informa ao kubernets o que pode fazer
+    - Ideal para aprendizado,fazer experimentos interativos,testes,debugar servicos
+    # <Exemplo>
+        - kubectl run nginx --image nginx
+
+- <Declarativa> Usar arquivos de manifesto no formato <YAML> ou <JSON> e aplicar
+usando o comando kubectl apply
+- Informa ao kubernets o que quer fazer
+- Ideal para implantar servicos de forma controlada
+- Recomendada para gerenciar aplicacoes kuberntes em producao
+# <Exemplo>
+        - kubectl apply -f newprod.yaml
+
+5. Kubernetes.Yaml
+- Os arquivos yaml contem  as definicoes de deployments,serices,pods,namespaces,replicasets
+,configmaps,secrets,nodes e outros objetos que desejamos definir
+
+6. Arquivo Yaml
+
+apiVersion: v1
+# Indica a versao da Api kubernets usada para criar o objeto
+Kind: Pod
+# Defone o tipo do Objeto : eployments,serices,pods,namespaces,replicasets,configmaps,secrets,nodes
+metadata:
+   name: pod-nginx
+# define o dados do objeto como: label,name (e um dicionario)
+spec:
+   containers:
+      - image: cont-nginx
+        name: nginx
+        ports:
+          - containerPort:80
+# Define as especificacoes do objeto que desejamos criar varia conforme o objeto que vamos criar
+# Aqui estamos criando u Pod com um container usando a imagem do nginx na porta 80
+# <Containers> e uma lista ou um array pois um pod pode conter multiplos containers
+
+7. Rodando um arquivo Yaml
+kubectl apply -f pod1.yaml
+
+8. Criando Pod forma Imperativa
+
+ - kubectl run nginx --image nginx
+ - kubectl get all  
+-  kubectl get pods
+-  kubectl get nodes
+-  kubectl describe pods
+
+# Deletando um pod
+- kubectl delete pod nginx
+
+9. Criando Pod forma Declarativa
+kubectl apply -f pod1.yaml
+
+10. Acessando Pod
+kubectl exec -ti pod-nginx -- sh
