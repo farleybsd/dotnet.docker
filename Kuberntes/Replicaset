@@ -1,0 +1,80 @@
+1. Kubernetes.Replicaset 
+
+# Para cuidar da resiliencia e da escabilidade o Kubernetes ofere um controller chamado <replicaset>
+
+# Se um <Pod> morrer por qualquer motivo ele sera recriado automaticamente para atender
+o que  foi definido no <replicaset>
+
+# <LABEL> sao pares de chave e valor que sao anexados a <Pods>,<ReplicaSet> e <servicos>
+e sao usados como atributos de indentificacao para esses objetos.Eles podem ser adicionados
+a um objeto no nomento da criacao e podem ser adicionados ou modificados no tempo de execucao.
+
+# O <replicaset> ultiliza o <selector> para definir a qual grupo de <Pods> as deifinicoes
+irao se aplicar.
+
+# Um <replicaset> e um processo que executa varias instancias de um pod e mantem o numero especificado de <Pods> constantes,sendo responsavel por alcancar e reconciliar o estado do
+objeto desejado de um servico de aplicativo,e, isso significa o que o <replicaset> gerenecia um conjunto de <Pods>.
+
+
+### O <replicaset> como os pods,o <replicaset> sao definidos em um arquico <YAML> que pode ser execultado a partir da linha de comando.
+
+2. Exemplo:...
+
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: redis-replicaset
+spec:
+  template:
+    metadata:
+      name: mypod
+      labels:
+        app: myapp
+        type: database
+    spec:
+      containers:
+        - name: cont-redis
+          image: redis
+          ports:
+            - containerPort: 80
+  replicas: 3
+  selector:
+      matchLabels:
+        type: database            
+
+
+3. Rodando o  Comando de um replicaset
+
+Kubectl apply -f replicaset1.yaml
+Kubectl create -f replicaset1.yaml
+
+4. O objetivo do replicaset e cuidar dos pods,manter o estado e aumentar/dimunuir as quantidades de pods quando necessario :
+
+- Se um <POD> morrer ele sera criado
+- se a aplicacao der problema e o <POD> morrer outro sera criado
+- Podemos escalar a aplicacao
+Kubectl scale replicaset redis-replicaset --replicas=10  # escalar numero de Pods
+
+6. Verificando a criacao
+# Kubectl get all
+
+NAME                         READY   STATUS    RESTARTS      AGE
+pod/pod-nginx                1/1     Running   1 (14m ago)   24h
+pod/redis-replicaset-7f69m   1/1     Running   0             85s
+pod/redis-replicaset-fthmw   1/1     Running   0             85s
+pod/redis-replicaset-r8stw   1/1     Running   0             85s
+
+NAME                 TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE
+service/kubernetes   ClusterIP   10.96.0.1    <none>        443/TCP   25h
+
+NAME                               DESIRED   CURRENT   READY   AGE
+replicaset.apps/redis-replicaset   3         3         3       85s
+
+7. Deletando um pod 
+# Kubectl delete redis-replicaset-7f69m
+
+8. Escalonando um pod manual
+Kubectl scale replicaset redis-replicaset --replicas=6
+
+9. Verificando informacoes do pod
+# Kubectl describe pod redis-replicaset-7f69m
