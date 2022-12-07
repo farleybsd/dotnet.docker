@@ -1,0 +1,69 @@
+1. Kuberntes.Deployment (Podemos usar <deployment> para aplicar uma atualizacao em <Pods>)
+
+# Um <deployment> e um conceito de nivel superior que gerencia <replicaset> e fornece atualizacoes declarativas para <pods> juntamente com muitos outros recursos uteis.
+# Podemos usar <deployment> para aplicar uma atualizacao em <Pods> e, da mesma forma
+reverter uma ataualizacao que falhou. 
+# Quando definimos um <deployment> tambem sera criado um <replicaset> que vai criar o numero definido de <pods>
+
+2. Quero 3 pods nginx com a label app=nginx1 em execucaona porta 80
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deploy
+spec:
+  replicas: 2
+  template:
+    metadata:
+      name: nginx-pod
+      labels:
+        app: nginx1
+    spec:
+      containers:
+      - name: nginx-container
+        image: nginx
+        ports:
+        - containerPort: 80
+  selector:
+      matchLabels:
+          app: nginx1
+
+3. Aplicando as configuracoes
+# kubectl apply -f deployment1.yaml
+
+4. Kubernetes.Deployment.Estrategia
+# Uma estrategia de um deployment e uma maneira de alterar ou atualizar um aplicativo. O objetivo e fazer alteracao sem tempo de inatividade de forma que o usuario mal perceba as alteracoes feitas.
+
+1. - <Recreate> : Encerra as instancias do <POD> atualmente em execucao e as 'recria' com  a nova versao.
+
+2. - <RollingUpdate> : Permite uma migracao ordenada de uma versao de um aplicativo para uma versao mais recente.(Essa e a strategia padrao usada pelo kuberntes)
+
+3. - <Blue/Green> : Sao criados dois ambientes separados, mais idennticos. um ambiente <Azul> que executa a versao atual do aplicativo e um ambiente <verde> esta sendo executado a nova versao do aplicativo.
+
+4. - <Canary> : E uma estrategia de implantacao que libera um aplicativo ou servico de forma incremental para um subconjunto de usuarios. 
+
+5. Verificando a criacao
+# kubectl get all 
+
+6. Informacoes do pods
+# kubectl get pods
+
+7. informacoes do replicaset
+# kubectl get rs 
+
+8. Informacoes do deploy
+# kubectl get deploy 
+
+9. Desricao do deployment
+# kubectl describe deployment nginx-deploy
+
+10. Deletando um Pod
+kubectl delete pod redis-replicaset-42zzq
+
+11. Deletando Todos os Pods
+kubectl delete pod --all
+
+12. Aumentando o numero de replicas
+# kubectl scale deployment nginx-deploy --replicas=3
+
+11. Desfazendo um deploy 
+# kubectl  rollout undo deploy nginx-deploy -n default
