@@ -1,0 +1,58 @@
+1. Kubernetes.Services 
+
+# E uma abstracao logica para um grupo inplantado de pods e, um cluster.
+
+# Um service permite que um grupo de pods receba um nome e um endereco de ip exclusivo (clusterIp) e estavel.
+
+# Enquanto o servico estiver em execucao esse endereco ip nao sera alterado mesmo se o pod morrer ou for excluido 
+
+# Conectam a um conjunto de pods a um nome de servico abastrato e um endereco Ip fornecem a descoberta entre pods.
+
+# Expoem uma interface a esses Pods que permite o acesso a rede de dentro do cluster ou entre processos externos e o servico.
+
+2. Como definir o grupo de Pods onde atuar ?
+
+# Os servicos usam labels e seletores para combinar os pods com outros aplicativos,e, os principais atributos de um service no kubernetes sao :
+
+1. - Um <label> que localiza os Pods
+2. - O endereco <IpDoCluster> e o numero de porta atribuido
+3. - <Definicoes> de porta
+4. - Mapeamento opcional de portas de entrada para um <targertPort>
+
+3. Tipos de servicos Kuberntes
+
+1. - <ClusterIp> Estabelece uma conexao entre diferentes servicos aplicativos usando um <IPVIRTUAL> de cluster interno. Esse tipo de servico so e acessivel dentro do cluster. (Padrao)
+
+2. - <NodePort> Permite acessibilidade externa a um Pod em um no recebendo uma solicitacao externa de um clientes ou usuarios e mapeando na porta de destino e na porta de servico do Pod tambem expoe um aplicativo externamente com a ajuda de um <NodeIp> e <NodePort> que expoe uma porta em cada Node(No).
+
+3. - <LoadBalancer> Compartilhar as solicitacoes do cliente nos servidores de forma continua,eficiente e uniforme para proteger contra o uso escessivo de recurso do servidor.
+
+4. - <ExternalName> Expoe o servico usando o nome arbitrario (especificadp atraves de externalName na espeficicacao) retornando um registro de <CNAME> com o nome.
+
+5. Como Descobrir um servico no K8S
+
+1. - Por meio do dns do cluster
+# Este metodo e o recomendado de descoberta de servicos.Para usar esse metodo,primeiro um servidor dns deve ser instalado no cluster.
+# O servidor Dns monitora a Api do luberntes e quando um novo servico e criado seu nome fica disponivel para facilitar a resolucao  dos aplicativos solicitados.
+
+2. - Por meio de varivaeis de ambiente nos Nodes ou Nos
+
+# Este Metodo depende de usar o <Kubelet> e  adicionar variaveis  de ambiente para cada servico ativo para cada o em que um pod esta sendo executado.
+
+
+6. Exemplo:
+
+7. Aplicando um service
+Kubectl apply -f service1.yaml
+
+
+8. Criando um servico pelo Commando:
+Kubectl expose deployment meu-deploy --name=apache-service --type=ClusterIp --port=8080 --target-port=8080
+
+
+9. Informacoes do servico
+kubectl get svc
+
+10. Fazendo Forward entre servicos (direcionando trafego)
+
+# kubectl port-forward service/apache-service 7000:8080

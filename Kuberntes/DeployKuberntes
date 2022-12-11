@@ -1,0 +1,52 @@
+1. Kuberntes.Deploy 
+
+Recursos Usados :
+    - Docker
+    - Kuberntes
+    - MiniKube
+    - Pods
+    - Replicasets
+    - Deployment
+    -Services 
+
+2. Procedimentos :
+    - Visual studio 2022
+    - Asp .Net Core Mvc
+    - Dockerfile
+    - Criar a imagem 
+    - Enviar imagem para Docker Hub (Privado)
+    - Criar Deployment
+    - Criar Service
+
+3. Passos
+    - Dockerfile
+    - Criando a imagem do docker :
+# docker build -f Dockerfile -t pizzafrontend .
+- Criando container com  a imagem do docker :
+# docker container run -d -p 8090:80 --name testemvc pizzafrontend
+
+4. Enviando  imagem para docker HUB
+    - docker login 
+    - Evinado a imagem 
+# docker tag pizzafrontend farleybsd/pizzafrontend
+# docker push farleybsd/pizzafrontend
+
+5. Criar o deployment Kubernets.deployment - frontend.deploy.yml
+- minikube start
+# kubectl apply -f frontend.deploy.yml
+
+6. verificando a criacao
+# kubectl.exe get all
+7. verificando a descricao do pod
+# kubectl describe deploy  pizzafrontend
+
+7. Criando o servico  frontend-service.yml
+# kubectl apply -f frontend-service.yml
+# kubectl.exe get all
+# kubectl describe svc  pizzafrontend
+
+8. Acessar o container 
+# minikube service pizzafrontend
+Obs: se o service falhar :
+# kubectl port-forward service/pizzafrontend 7080:8080
+no navegador acessar http://localhost:7080
