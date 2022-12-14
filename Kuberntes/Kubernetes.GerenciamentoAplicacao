@@ -1,0 +1,71 @@
+# Deletar Pods,Deployment,Services,Etc
+
+* Podemos excluir qualquer objeto,seja pod,deployment,servicos,ingress,etc... usando o comando <Kubectl delete>
+
+    ## kubectl delete <tipo_objeto><nome_objeto>
+
+# Pod
+kubectl delete pod pizza pizzabackend-65dfd46775-p977t 
+
+# Service
+kubectl delete svc pizzabackend
+
+# YAML
+kubectl delete -f frontend.deploy.yml
+
+
+# Debugar Pods - Basico
+kubectl e a ferramenta administrativa primaria para analisar o cluster kubernetes e possui mais 30 commandos para isso.
+
+kubectl get <tipo>
+
+# Pods
+kubectl get pods
+
+# Servico
+kubectl get svc
+
+# deploy
+kubectl get deploy
+
+# Debugar Pods - Detalhado
+# Pods
+kubectl describe  pod pizzafrontend-c495774c7-wsn8l
+
+# Servico
+kubectl describe svc pizzafrontend
+
+# deploy
+kubectl  describe deploy pizzafrontend
+
+# logs 
+
+kubectl nome_ pod -c nome_container
+
+kubectl logs pizzafrontend-c495774c7-wsn8l
+
+# Executar um comando  em um Pod
+Podemos execultar um comando em um pod em execucao
+
+kubectl exec -it nome_pod --comando
+
+kubectl exec -it pizzafrontend-c495774c7-wsn8l -- sh
+
+# KubeConfig
+E um arquivo usado paara configurar o acesso ao Kubernetes quando usado em conjunto com a ferramenta de linha de commando kubectl (ou outos clientes)
+Usado  para organizar informacoes sobre clusters,usuario,namespaces e mecanismo de autenticacao.
+
+- No Windows esta localizada dentro da pasta : C:\Users\{seu-usuario}\.Kube.
+
+Kubectl config --help
+Kubectl config <Comando>
+
+- Kubectl config current-context
+- Kubectl config get-contexts
+- Kubectl config get-clusters
+
+# DashBoard
+O minikube DashBoard e uma interface grafica do usuario baseada na  web para gerenciar seu cluster kubernetes e aplicatvios executado no K8s
+
+minikube dashboard 
+minikube dashboard --url
