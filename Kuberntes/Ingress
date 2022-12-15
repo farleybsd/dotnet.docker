@@ -1,0 +1,52 @@
+# Ingress
+
+- O ingress e um objeto kuberntes cujo o trabalho e expor gerenciar o acesso externo aos services ou servicos do kubernetes usando o http e https:
+
+- Ele expoe rotas Http e HTTPS de fora do cluster para servicos dentro do cluster e o roteamento de trafego e controlado por regras definidas no recurso ingress.
+
+- O ingress fica na frente de varios servicos e atua como um roteador inteligente ou ponto de entrada no cluster.
+
+- Assim um ingress pode controlar varios servicos e isso reduz a sua complexidades.
+
+- O ingress e capaz de fornecer um balanceamento de carga,terminacao SSL e hospedagem virtual baseada em nome.
+
+- E seus recursos permitem expor com seguranca varias apis ou aplicativos de um unico nome de dominio.
+
+## O que   e preciso para o ingress funcionar ?
+
+- Para que o ingress funcione,seu cluster kuberntes deve ter um ingress controller em execucao.
+
+- O trabalho do ingress controller e ver se a solicitacao recevida e repassa-la ao respoectivo ingress.
+
+- Existem muitos ingress controllers e vamos usar o ingress-nginx para o exemplo desta aula:
+        - 1. E dessevonvido pela equipe do kuberntes sendo o mais popular
+        - 2. E um pacote completo e funciona perfeitamente
+
+
+### Instalacao
+ minikube addons enable ingress 
+
+ #### Criando um recurso ingress para uma aplicacao Asp.Net Core
+
+ - Vamos iniciar definindo um recurso Ingress,atraves de um arquivo Yaml,
+ que ira expor todas as ritas Http e HTTPS de fora do cluster para o servico.
+
+ - Uma vez que o ingress foi criado,poderemos acessar a aplicacao Asp.Net Core abrindo o endereco ip do ingress  no navegador 
+
+ - Para  isso vamos criar o arquivo Yaml: frontend-ingress.yaml
+
+    - o arquivo ingress precisa definir os campos : ApiVersion,Kind,metada e espec
+    - O nome de um objeto ingress deve ser um nome de subdominio valido dns
+
+    ##### Aplicando o Ingress Linux Mac
+
+    kubectl apply -f frontend-ingress.yaml
+    kubectl get ingress
+    Abir no nabevador na url 
+
+   ##### Aplicando o Ingress Windows
+   kubectl apply -f frontend-ingress.yaml
+   kubectl get ingress
+   minikube tunnel
+   minikube ssh
+   curl 192.168.49.2
