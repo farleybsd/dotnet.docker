@@ -1,0 +1,52 @@
+### Volumes Evita a perca de Dados
+
+    -> Problema : Persistencia de Dados
+
+- Arquivos em disco nos containers sao efemeros
+- Os pods em cluster sao efemeros
+- Compartilhar dados entre containers executados juntos em um Pod
+
+#### Solucao : Volumes
+- Volume : Apresenta diversos tipos de volumes : EmptyDir,hostpath,nfs etc ...
+
+- Ephemeral Volume => Estao localizados denotro do <POD> e portanto tem a vida util de um <POD> e portanto tem a mesma vida util de um <pod>.Eles podem sobreviber a uma falha de container ,as quando o <POD> falha o volume e perdido
+
+- Persistent Volume (PV) => Estao localizados fora do <POD> e sobrevivem a todos os eventos se o <POD> travar ou morrer.Eles existemalem dos containers,Pods e nodes
+
+- Persistent Volume Claim (PVC)
+- Storage Class (SC)
+
+- Um volume e essencialmente um diretorio contendo arquivos, acessivel a todos os containers em um <POD> e apoiado por um meio de armazenamento onde o meio de armazenamento
+e seus conteudo sao determinados pelo tipo de volume usado.
+
+- Os arquivos para esse diretorio pode ser montados de fora do pod e , se o pod ou os containers falharem, esse diretorio e seu conteudo permaneceram seguros.
+
+- Um volume anexado a um pod e  compartilhado entre  os containers desse pod para leitura e gravacao.
+
+- Ele possui a mesma vida util do pod e sobrevive aos containers do pod assim os dados serao preservados na reinicializacoes do containers
+
+
+#### Criar um volume emptyDir na Asp.Net core com minikube
+
+- Usar a imagem pizzafrontend criada nas aulas anteriores a partir do docker hud
+- Criar um arquivo de deployment frontend-volume1.yml e espeficiar o volume emptyDir( se o pode cair perde os dados)
+
+- Aplicar as configuracoes
+Kubectl apply -f frontend-volume1.yml
+
+- Verificar a criacao do Pod  e do Volume
+Kubectl describe pod <Nome_Do_Pod>
+Kubectl describe pod frontend-volume-58bf67c85d
+- Usar o volume criando um arquivo no diretorio do volume
+Kubectl exec -it <Nome_Do_Pod> -- /bin/bash , echo teste > arquivo
+Kubectl exec -it frontend-volume-58bf67c85d-wlq44 -- /bin/bash 
+ls -l 
+cd meuvolume 
+ls -l
+echo 'teste' > arquivo.txt
+
+- Matr o container do pod e verificar o arquivo criado
+Kubectl exec  <Nome_Do_Pod> -c <Nome_Do_Container> -- /bin/bash -c "Kill 1"
+
+- Matar o Pod e veirifcar o arquivo Criado
+Kubectl delete <Nome_Do_Pod>
